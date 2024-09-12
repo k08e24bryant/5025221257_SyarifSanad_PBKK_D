@@ -1,66 +1,101 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Tugas 1
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Struktur Folder Laravel
 
-## About Laravel
+Laravel memiliki struktur folder yang dirancang untuk memudahkan pengelolaan aplikasi dan memisahkan berbagai bagian aplikasi secara jelas. Berikut adalah penjelasan tentang struktur folder utama dalam proyek Laravel:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### `app/`
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **`Console/`**: Berisi perintah Artisan khusus yang Anda buat. Artisan adalah alat baris perintah Laravel.
+- **`Exceptions/`**: Berisi handler untuk pengecualian yang terjadi dalam aplikasi Anda.
+- **`Http/`**: Berisi kontroler, middleware, dan form request untuk menangani logika aplikasi berbasis HTTP.
+  - **`Controllers/`**: Tempat Anda menyimpan kontroler yang menangani permintaan HTTP dan memproses logika aplikasi.
+  - **`Middleware/`**: Menyimpan middleware, yang merupakan lapisan pengolahan yang dapat memodifikasi permintaan atau respons.
+  - **`Requests/`**: Berisi kelas yang digunakan untuk validasi dan otorisasi data dari permintaan HTTP.
+- **`Models/`**: Berisi model yang mewakili tabel di database dan berisi logika aplikasi terkait data.
+- **`Providers/`**: Menyimpan penyedia layanan yang menghubungkan berbagai bagian aplikasi, seperti pendaftaran layanan dan binding dalam kontainer layanan.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### `bootstrap/`
 
-## Learning Laravel
+- **`cache/`**: Berisi file cache untuk meningkatkan kinerja aplikasi, seperti cache konfigurasi dan rute.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### `config/`
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- Berisi file konfigurasi aplikasi, yang memungkinkan Anda mengatur berbagai pengaturan seperti database, sesi, dan cache.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### `database/`
 
-## Laravel Sponsors
+- **`factories/`**: Berisi definisi pabrik untuk menghasilkan data palsu untuk pengujian.
+- **`migrations/`**: Berisi file migrasi untuk mengubah struktur database.
+- **`seeders/`**: Berisi kelas yang digunakan untuk menyemai data awal ke dalam database.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### `public/`
 
-### Premium Partners
+- Menyediakan akses ke file publik seperti CSS, JavaScript, dan gambar. Ini adalah root dari aplikasi Anda yang diakses oleh pengguna.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### `resources/`
 
-## Contributing
+- **`views/`**: Berisi template Blade untuk tampilan aplikasi.
+- **`lang/`**: Berisi file terjemahan untuk mendukung internasionalisasi.
+- **`sass/`**: Berisi file SCSS untuk styling aplikasi (jika menggunakan Laravel Mix untuk mengkompilasi aset).
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### `routes/`
 
-## Code of Conduct
+- Berisi file yang mendefinisikan rute aplikasi Anda. Rute menghubungkan URL ke kontroler atau tindakan.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### `storage/`
 
-## Security Vulnerabilities
+- **`app/`**: Berisi file yang diunggah oleh pengguna dan file lainnya yang dihasilkan oleh aplikasi.
+- **`framework/`**: Berisi file cache, log, dan session.
+- **`logs/`**: Menyimpan log aplikasi.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### `tests/`
 
-## License
+- Berisi file pengujian aplikasi, termasuk unit dan pengujian fitur.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### `vendor/`
+
+- Berisi paket-paket yang diinstal melalui Composer. Ini adalah tempat pustaka pihak ketiga berada.
+
+### `.env`
+
+- File konfigurasi lingkungan yang menyimpan pengaturan sensitif seperti koneksi database dan kunci aplikasi.
+
+### `artisan`
+
+- Skrip CLI Laravel yang menyediakan berbagai perintah pengembangan, seperti pembuatan kontroler, model, dan migrasi.
+
+Struktur folder ini membantu memisahkan dan mengorganisasi berbagai komponen dalam aplikasi Laravel Anda, membuatnya lebih mudah untuk dikembangkan dan dikelola.
+
+
+
+
+## Blade Template Engine dan Blade Components
+
+Laravel menyediakan Blade sebagai template engine yang powerful dan mudah digunakan untuk memanipulasi tampilan aplikasi. Blade memungkinkan Anda untuk menulis kode HTML dan PHP dengan cara yang bersih dan terstruktur. Selain itu, Blade Components adalah fitur yang memungkinkan Anda membuat dan menggunakan komponen tampilan yang dapat digunakan kembali.
+
+### Blade Template Engine
+
+Blade adalah template engine default Laravel yang memungkinkan Anda untuk menggunakan sintaks PHP yang sederhana dalam file template Blade (.blade.php). Blade membuat pengembangan tampilan lebih efisien dan terorganisir.
+
+#### Fitur Utama Blade:
+
+- **Sintaks Sederhana**: Blade memungkinkan penggunaan sintaks yang bersih untuk menampilkan data, melakukan loop, dan pengkondisian.
+  
+  ```blade
+  <!-- Menampilkan data -->
+  <p>Hello, {{ $name }}!</p>
+
+  <!-- Looping -->
+  @foreach ($users as $user)
+      <p>{{ $user->name }}</p>
+  @endforeach
+
+  <!-- Kondisi -->
+  @if (auth()->check())
+      <p>Welcome, {{ auth()->user()->name }}!</p>
+  @else
+      <p>Please log in.</p>
+  @endif
+
+
