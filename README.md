@@ -82,15 +82,15 @@ Blade adalah template engine default Laravel yang membuat pembuatan tampilan men
 - **Sintaks yang Sederhana**: Blade memungkinkan kita menggunakan sintaks yang ringkas untuk menampilkan data, melakukan loop, dan kondisi.
 
   ```blade
-  <!-- Menampilkan data -->
+
   <p>Hello, {{ $name }}!</p>
 
-  <!-- Looping -->
+
   @foreach ($users as $user)
       <p>{{ $user->name }}</p>
   @endforeach
 
-  <!-- Kondisi -->
+
   @if (auth()->check())
       <p>Welcome, {{ auth()->user()->name }}!</p>
   @else
