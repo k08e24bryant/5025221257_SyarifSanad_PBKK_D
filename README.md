@@ -100,7 +100,7 @@ Blade adalah template engine default Laravel yang membuat pembuatan tampilan men
 
 ## Lampiran
 
-Berikut adalah beberapa tangkapan layar dari tampilan aplikasi kita:
+
 
 - **Home**
   ![image](https://github.com/user-attachments/assets/affeacbe-daf0-40c6-b353-8894fe2e8eb0)
