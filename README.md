@@ -117,7 +117,7 @@ Blade adalah template engine default Laravel yang membuat pembuatan tampilan men
 
 
 
-```markdown
+
 # Tugas 2
 
 ## View dan Model dalam Laravel
@@ -130,6 +130,7 @@ Model dalam Laravel bertanggung jawab untuk berinteraksi dengan database. Model 
 
 #### Contoh Struktur Model:
 File model dapat ditemukan di folder `app/Models`. Sebagai contoh, berikut adalah model `Post` yang mengelola data terkait postingan.
+
 
 ```php
 <?php
