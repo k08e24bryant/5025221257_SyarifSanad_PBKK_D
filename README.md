@@ -98,7 +98,7 @@ Blade adalah template engine default Laravel yang membuat pembuatan tampilan men
   @endif
 
 
-## Lampiran
+## Lampiran Tugas 1
 
 
 
@@ -113,6 +113,115 @@ Blade adalah template engine default Laravel yang membuat pembuatan tampilan men
 
 - **Contact**
   ![image](https://github.com/user-attachments/assets/29403efa-eda4-47d5-a636-d700d4147e3b)
+
+
+
+
+```markdown
+# Tugas 2
+
+## View dan Model dalam Laravel
+
+Pada tugas ini, kita akan fokus pada **View** dan **Model** dalam framework Laravel. Laravel memisahkan tampilan dan logika aplikasi secara terstruktur dengan menggunakan Blade sebagai template engine untuk view dan model untuk mengelola data yang berinteraksi dengan database.
+
+### 1. **Model**
+
+Model dalam Laravel bertanggung jawab untuk berinteraksi dengan database. Model mewakili tabel dalam database dan memfasilitasi pengelolaan data melalui ORM (Object-Relational Mapping) yang disebut Eloquent.
+
+#### Contoh Struktur Model:
+File model dapat ditemukan di folder `app/Models`. Sebagai contoh, berikut adalah model `Post` yang mengelola data terkait postingan.
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Post extends Model
+{
+    use HasFactory;
+
+    protected $fillable = ['title', 'content'];
+}
+```
+
+#### Fitur Utama Model:
+- **ORM Eloquent**: Memudahkan kita untuk berinteraksi dengan database menggunakan model, sehingga tidak perlu menulis kueri SQL secara manual.
+- **Fungsi `fillable`**: Mengatur atribut yang dapat diisi secara massal melalui metode seperti `create()` atau `update()`.
+
+### 2. **View**
+
+View dalam Laravel bertanggung jawab untuk menampilkan data kepada pengguna. Laravel menggunakan Blade sebagai template engine untuk memudahkan pengelolaan tampilan.
+
+#### Contoh Struktur View:
+View disimpan di folder `resources/views`. Sebagai contoh, berikut adalah template Blade untuk menampilkan postingan.
+
+`resources/views/posts.blade.php`
+
+```blade
+@extends('layouts.app')
+
+@section('content')
+    <h1>Daftar Postingan</h1>
+
+    @foreach($posts as $post)
+        <div class="post">
+            <h2>{{ $post->title }}</h2>
+            <p>{{ $post->content }}</p>
+        </div>
+    @endforeach
+@endsection
+```
+
+#### Fitur Utama View:
+- **Blade Template Engine**: Blade memungkinkan kita menggunakan sintaks yang sederhana untuk menampilkan data, membuat loop, dan kondisi.
+- **Komponen Blade**: Kita dapat membuat komponen tampilan yang dapat digunakan kembali di berbagai bagian aplikasi.
+
+### 3. **Interaksi Model dan View**
+
+Model dan View bekerja sama melalui kontroler. Kontroler akan mengambil data dari model dan mengirimkannya ke view untuk ditampilkan. Contoh berikut menunjukkan bagaimana kontroler menghubungkan model `Post` dengan view.
+
+`app/Http/Controllers/PostController.php`
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Post;
+use Illuminate\Http\Request;
+
+class PostController extends Controller
+{
+    public function index()
+    {
+        $posts = Post::all();
+        return view('posts', compact('posts'));
+    }
+}
+```
+
+### 4. **Rute (Route)**
+
+Rute (route) menghubungkan URL ke kontroler yang sesuai. Pada contoh ini, kita akan menambahkan rute untuk menampilkan daftar postingan.
+
+`routes/web.php`
+
+```php
+use App\Http\Controllers\PostController;
+
+Route::get('/posts', [PostController::class, 'index']);
+```
+
+Dengan menambahkan rute ini, ketika pengguna mengakses `/posts`, mereka akan melihat daftar postingan yang diambil dari model `Post` dan ditampilkan melalui view `posts.blade.php`.
+```
+
+## Lampiran Tugas 2
+
+![image](https://github.com/user-attachments/assets/0c875433-db48-4d7d-a3b3-85fb51021521)
+![image](https://github.com/user-attachments/assets/5bfaef0e-2f26-4a9f-81d1-f763fa53a45f)
 
 
 
