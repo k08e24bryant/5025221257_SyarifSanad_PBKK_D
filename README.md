@@ -217,7 +217,7 @@ Route::get('/posts', [PostController::class, 'index']);
 ```
 
 Dengan menambahkan rute ini, ketika pengguna mengakses `/posts`, mereka akan melihat daftar postingan yang diambil dari model `Post` dan ditampilkan melalui view `posts.blade.php`.
-```
+
 
 ## Lampiran Tugas 2
 
