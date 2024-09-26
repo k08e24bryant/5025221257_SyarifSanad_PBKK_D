@@ -225,6 +225,110 @@ Dengan menambahkan rute ini, ketika pengguna mengakses `/posts`, mereka akan mel
 ![image](https://github.com/user-attachments/assets/5bfaef0e-2f26-4a9f-81d1-f763fa53a45f)
 
 
+# Tugas 3: Database, Migration, dan Eloquent ORM
+
+Pada tugas ini, kita akan memanfaatkan Database, Migration, dan Eloquent ORM. 
+
+## Fitur Utama:
+
+### 1. **Database Connection**
+Pengaturan koneksi ke database dilakukan melalui file `.env`. Pada proyek ini, kita menggunakan SQLite atau MySQL sebagai database. Contoh konfigurasi koneksi untuk SQLite:
+
+```env
+DB_CONNECTION=sqlite
+DB_DATABASE=/path/to/database/database.sqlite
+```
 
 
+
+### 2. **Migration**
+Migration digunakan untuk membuat dan mengelola struktur tabel di database. Berikut langkah-langkah untuk membuat migrasi tabel `posts`:
+
+1. Buat migrasi baru dengan perintah berikut:
+   ```bash
+   php artisan make:migration create_posts_table
+   ```
+
+2. Pada file migrasi yang baru saja dibuat, tambahkan kolom yang diperlukan untuk tabel `posts` seperti berikut:
+
+```php
+Schema::create('posts', function (Blueprint $table) {
+    $table->id();
+    $table->string('title');
+    $table->string('slug')->unique();
+    $table->string('author');
+    $table->text('body');
+    $table->timestamps();
+});
+```
+
+3. Jalankan migrasi menggunakan perintah:
+   ```bash
+   php artisan migrate
+   ```
+
+### 3. **Eloquent ORM**
+Eloquent ORM memungkinkan kita untuk memetakan tabel database ke dalam model Laravel. Pada proyek ini, kita akan membuat model `Post` yang mewakili tabel `posts`.
+
+#### Membuat Model `Post`:
+Untuk membuat model `Post`, jalankan perintah berikut:
+```bash
+php artisan make:model Post
+```
+
+Tambahkan properti `fillable` pada model `Post` untuk mengizinkan mass assignment pada kolom `title`, `slug`, `author`, dan `body`.
+
+```php
+class Post extends Model
+{
+    protected $fillable = ['title', 'slug', 'author', 'body'];
+}
+```
+
+### 4. **Route Model Binding**
+Route model binding memudahkan pengambilan data dari database berdasarkan kolom tertentu seperti `slug`. Dengan menggunakan route model binding, kita dapat secara otomatis memetakan URL ke model tanpa perlu menulis kueri secara manual.
+
+#### Definisi Route:
+Tambahkan rute untuk menampilkan daftar postingan dan detail postingan berdasarkan slug di file `routes/web.php`:
+
+```php
+use App\Models\Post;
+
+Route::get('/posts', function () {
+    return view('posts', [
+        'title' => 'Blog',
+        'posts' => Post::all()
+    ]);
+});
+
+Route::get('/posts/{post:slug}', function (Post $post) {
+    return view('post', [
+        'title' => 'Single Post',
+        'post' => $post
+    ]);
+});
+```
+
+### 5. **Menambahkan Data Postingan dengan Tinker**
+Untuk menambahkan data ke tabel `posts`, kita dapat menggunakan Tinker. Jalankan perintah berikut di terminal untuk masuk ke mode Tinker:
+
+```bash
+php artisan tinker
+```
+
+Setelah itu, tambahkan data dengan cara berikut:
+
+```php
+App\Models\Post::create([
+    'title' => 'Judul Artikel 1',
+    'author' => 'Syarif Sanad',
+    'slug' => 'judul-artikel-1',
+    'body' => 'Ini adalah konten dari artikel pertama.'
+]);
+```
+
+
+## Lampiran Tugas 3
+ ![image](https://github.com/user-attachments/assets/22b25922-4129-443c-9f14-387f7171ed0e)
+ ![image](https://github.com/user-attachments/assets/b85bd829-865a-4b67-b9ba-56989c29fa68)
 
