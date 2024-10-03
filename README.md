@@ -332,3 +332,159 @@ App\Models\Post::create([
  ![image](https://github.com/user-attachments/assets/22b25922-4129-443c-9f14-387f7171ed0e)
  ![image](https://github.com/user-attachments/assets/b85bd829-865a-4b67-b9ba-56989c29fa68)
 
+
+
+# Tugas 4: Model Factories, Eloquent Relationship, Post Category, dan Database Seeder
+
+## 1. **Model Factories**
+
+Model Factories di Laravel memudahkan kita untuk membuat data uji dalam jumlah besar dengan cepat dan efisien. Pada tugas ini, kita menggunakan factory untuk membuat data `Post`, `Category`, dan `User`. 
+
+### Contoh Pembuatan Post Factory:
+
+```php
+<?php
+
+namespace Database\Factories;
+
+use App\Models\User;
+use App\Models\Category;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class PostFactory extends Factory
+{
+    public function definition(): array
+    {
+        return [
+            'title' => $this->faker->sentence(),
+            'author_id' => User::factory(),  // Relasi ke model User
+            'category_id' => Category::factory(),  // Relasi ke model Category
+            'slug' => Str::slug($this->faker->sentence()),
+            'body' => $this->faker->paragraph(),
+        ];
+    }
+}
+```
+
+Dengan factory ini, setiap kali kita menjalankan factory `Post`, secara otomatis akan dibuat user dan category baru melalui relasi yang sudah didefinisikan.
+
+## 2. **Eloquent Relationship**
+
+Pada aplikasi ini, kita mendefinisikan beberapa relasi menggunakan Eloquent untuk menghubungkan model `Post`, `Category`, dan `User`.
+
+### Relasi `Post` dan `Category`
+
+Setiap `Post` dihubungkan dengan satu `Category`, dan setiap `Category` dapat memiliki banyak `Post`. Relasi ini didefinisikan menggunakan `belongsTo()` dan `hasMany()` di masing-masing model.
+
+#### Model `Post`:
+
+```php
+public function category()
+{
+    return $this->belongsTo(Category::class);
+}
+```
+
+#### Model `Category`:
+
+```php
+public function posts()
+{
+    return $this->hasMany(Post::class);
+}
+```
+
+Dengan relasi ini, kita bisa mendapatkan kategori dari sebuah postingan melalui `$post->category` dan mendapatkan semua postingan dari sebuah kategori melalui `$category->posts`.
+
+### Relasi `Post` dan `User`
+
+Selain itu, `Post` juga dihubungkan dengan `User` sebagai penulisnya (`author`). Berikut cara mendefinisikan relasi antara `Post` dan `User`:
+
+#### Model `Post`:
+
+```php
+public function author()
+{
+    return $this->belongsTo(User::class, 'author_id');
+}
+```
+
+Dengan relasi ini, kita bisa mendapatkan informasi penulis dari sebuah postingan melalui `$post->author`.
+
+## 3. **Post Category**
+
+Pada tugas ini, kita membuat relasi antara `Post` dan `Category` untuk memisahkan konten berdasarkan kategori tertentu. Berikut adalah beberapa implementasi yang kita gunakan:
+
+### View: Menampilkan Kategori dari Setiap Post
+
+Pada halaman daftar post, kita menampilkan kategori dari setiap post seperti berikut:
+
+```html
+<a href="/categories/{{ $post->category->slug }}" class="hover:underline text-base text-gray-500">
+    {{ $post->category->name }}
+</a>
+```
+
+Ini memungkinkan kita untuk mengklik kategori dan melihat semua postingan di kategori tersebut.
+
+### Routing untuk Menampilkan Post Berdasarkan Kategori
+
+Kita juga mendefinisikan rute untuk menampilkan semua postingan di sebuah kategori:
+
+```php
+Route::get('/categories/{category:slug}', function (Category $category) {
+    return view('posts', [
+        'title' => 'Articles in ' . $category->name,
+        'posts' => $category->posts
+    ]);
+});
+```
+
+Dengan rute ini, kita bisa mengakses URL seperti `/categories/web-development` untuk menampilkan semua postingan di kategori `Web Development`.
+
+## 4. **Database Seeder**
+
+Untuk mengisi database dengan data awal, kita menggunakan seeder. Seeder memungkinkan kita untuk menginisialisasi database dengan data uji atau data awal yang diperlukan oleh aplikasi.
+
+### Contoh Seeder untuk Post, Category, dan User
+
+```php
+use App\Models\Post;
+use App\Models\Category;
+use App\Models\User;
+
+class DatabaseSeeder extends Seeder
+{
+    public function run()
+    {
+        // Buat 5 pengguna
+        User::factory(5)->create();
+
+        // Buat 3 kategori
+        $categories = Category::factory(3)->create();
+
+        // Buat 100 post, masing-masing dihubungkan dengan kategori dan penulis
+        Post::factory(100)->create();
+    }
+}
+```
+
+### Menjalankan Seeder
+
+Setelah seeder didefinisikan, kita bisa menjalankan perintah berikut untuk mengisi database:
+
+```bash
+php artisan db:seed
+```
+
+Ini akan mengisi tabel `users`, `categories`, dan `posts` dengan data yang dihasilkan oleh factory sesuai dengan jumlah yang telah ditentukan.
+
+
+## Lampiran Tugas 4
+
+![image](https://github.com/user-attachments/assets/7ebe2567-6625-4f8d-9113-128b2274a02b)
+![image](https://github.com/user-attachments/assets/e176ae91-af2c-4efb-a538-7ea6feba50f3)
+
+
+
