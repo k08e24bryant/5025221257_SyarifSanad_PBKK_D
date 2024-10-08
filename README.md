@@ -488,3 +488,142 @@ Ini akan mengisi tabel `users`, `categories`, dan `posts` dengan data yang dihas
 
 
 
+
+
+# Tugas 5: N+1 Problem, Redesign UI, Searching, dan Pagination
+
+## A. **N+1 Problem**
+
+### Penjelasan:
+N+1 Problem adalah salah satu masalah klasik yang sering dihadapi saat menggunakan ORM (Object Relational Mapping) seperti Eloquent di Laravel. Masalah ini terjadi ketika aplikasi melakukan query tambahan setiap kali ingin mengakses relasi dari sebuah model. Misalnya, jika ada 10 post, dan setiap post punya author, maka akan ada 1 query untuk mengambil post, ditambah 10 query untuk mengambil author setiap post.
+
+### Solusi:
+Untuk mengatasi masalah ini, kita bisa menggunakan **Eager Loading** dengan `with()`. Dengan eager loading, kita bisa mengambil data relasi (seperti author atau category) sekaligus dalam satu query.
+
+### Contoh Implementasi:
+
+```php
+// Sebelum: N+1 Problem
+$posts = Post::all();
+foreach ($posts as $post) {
+    echo $post->author->name; // Menyebabkan query tambahan untuk setiap post
+}
+
+// Sesudah: Menggunakan Eager Loading
+$posts = Post::with('author', 'category')->get();
+foreach ($posts as $post) {
+    echo $post->author->name; // Hanya satu query untuk author
+}
+```
+
+Dengan `with()`, kita menghemat banyak query yang bisa memperlambat performa aplikasi.
+
+---
+
+## B. **Redesign UI**
+
+### Penjelasan:
+Untuk redesign UI, kita menggunakan **Tailwind CSS** dan beberapa blocks dari **Flowbite**, terutama `Newsletter` untuk bagian newsletter dan `Blog Section` untuk tampilan posts. Desain ini membuat UI lebih modern dan responsif, serta memberikan pengalaman pengguna yang lebih baik di berbagai ukuran layar.
+
+### Contoh Redesign:
+
+#### **Newsletter Section**:
+Pada bagian newsletter, kita menggunakan desain block yang menarik dengan form input untuk email yang responsif.
+
+```html
+<section class="bg-white dark:bg-gray-900">
+  <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
+    <h1 class="mb-4 text-3xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl lg:text-5xl dark:text-white">
+      Sign up for our newsletter
+    </h1>
+    <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
+      Stay updated with the latest posts and special offers.
+    </p>
+    <form class="flex justify-center">
+      <input type="email" placeholder="Enter your email" class="p-4 w-2/3 rounded-lg border text-gray-900">
+      <button class="p-4 bg-blue-600 text-white rounded-lg">Subscribe</button>
+    </form>
+  </div>
+</section>
+```
+
+#### **Blog Section**:
+Bagian post blog di-redesign dengan tampilan **3 kolom** di layar besar dan **2 kolom** di layar menengah, sehingga lebih rapi dan enak dilihat.
+
+```html
+<div class="grid gap-8 md:grid-cols-3 sm:grid-cols-2">
+  @foreach($posts as $post)
+    <article class="p-6 bg-white rounded-lg border shadow-md dark:bg-gray-800">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $post->title }}</h2>
+      <p class="text-gray-500">{{ Str::limit($post->body, 150) }}</p>
+      <a href="/posts/{{ $post->slug }}" class="text-blue-600 hover:underline">Read More</a>
+    </article>
+  @endforeach
+</div>
+```
+
+---
+
+## C. **Searching**
+
+### Penjelasan:
+Fitur searching memungkinkan user untuk mencari postingan berdasarkan judul atau isi artikel. Dengan menggunakan query `where()` dari Eloquent, kita bisa mencari post yang mengandung kata kunci tertentu.
+
+### Contoh Implementasi:
+
+```php
+// Di Model Post
+public function scopeFilter(Builder $query, array $filters): void
+{
+    $query->when($filters['search'] ?? false, function ($query, $search) {
+        $query->where('title', 'like', '%' . $search . '%')
+              ->orWhere('body', 'like', '%' . $search . '%');
+    });
+}
+```
+
+Di form Blade, user bisa mengetikkan kata kunci dan melakukan pencarian:
+
+```html
+<form action="/posts" method="GET">
+    <input type="text" name="search" placeholder="Search for articles..." class="p-3 border rounded-lg">
+    <button type="submit" class="p-3 bg-blue-500 text-white rounded-lg">Search</button>
+</form>
+```
+
+---
+
+## D. **Pagination**
+
+### Penjelasan:
+Untuk membatasi jumlah postingan yang muncul di setiap halaman, kita menggunakan fitur pagination bawaan Laravel. Ini memastikan bahwa halaman tetap rapi dan tidak terlalu panjang jika ada banyak post.
+
+### Contoh Implementasi:
+
+```php
+// Pada Controller atau Route
+$posts = Post::paginate(9);
+```
+
+Di Blade, kita bisa menambahkan paginasi dengan mudah:
+
+```html
+{{ $posts->links() }}
+```
+
+Ini akan otomatis menghasilkan link untuk navigasi antar halaman.
+
+---
+## Lampiran Tugas 5
+
+![image](https://github.com/user-attachments/assets/fe07f6b2-8980-4066-96bf-f969d6d6c994)
+![image](https://github.com/user-attachments/assets/52d3b967-5b17-4305-921f-11d1517a7fac)
+![image](https://github.com/user-attachments/assets/0a0122aa-e068-43d0-b4b9-944a8f64abf7)
+![image](https://github.com/user-attachments/assets/9a7a04d9-7a4f-4224-9ff8-0da4ee1357c4)
+
+
+
+
+
+
+
